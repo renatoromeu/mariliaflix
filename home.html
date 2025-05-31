@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mariliaflix - Home</title>
+  <!-- Aponta para o CSS que estiliza cards, modal etc. -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header>
+    <h1>Mariliaflix</h1>
+  </header>
+
+  <main id="main-content">
+    <!-- O JS vai injetar aqui:
+         1) Seção “Vídeos”
+         2) Seções “Momentos de Mês de Ano” para as fotos -->
+  </main>
+
+  <!-- Modal para exibir vídeo ou foto ampliada -->
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <button class="modal-close" id="modalClose">&times;</button>
+      <div id="modalMediaContainer">
+        <!-- app.js vai injetar aqui um <video> ou <img> -->
+      </div>
+      <div class="modal-info">
+        <h3 id="modalTitle"></h3>
+        <div class="modal-actions">
+          <button id="likeButton">
+            <span class="icon-heart">❤</span>
+            <span id="modalLikes">0</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chama o app.js que carrega vídeos/fotos -->
+  <script src="js/app.js"></script>
+</body>
+</html>

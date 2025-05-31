@@ -1,0 +1,276 @@
+/* ==============================================================
+   CSS COMPLETO - Style para Mariliaflix
+   --------------------------------------------------------------
+   - Grid de cards responsivo (usa CSS Grid)
+   - Modal que exibe fotos/vídeos inteiros (sem cortes nem scroll interno)
+   - Títulos de “Momento” em fonte maior e espaçamento aumentado
+   - Scrollbar customizada verticalmente
+   - Tema escuro inspirado na Netflix
+   ============================================================== */
+
+/* --------------------------------------------------------------
+   1) Reset e variáveis de cores
+-------------------------------------------------------------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #121212;
+  --text: #e5e5e5;
+  --highlight: #e50914;
+  --card-bg: #1f1f1f;
+  --overlay-bg: rgba(0, 0, 0, 0.4);
+}
+
+/* --------------------------------------------------------------
+   2) Estilos gerais do body, header e scroll
+-------------------------------------------------------------- */
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: Arial, sans-serif;
+  overflow-y: auto;    /* Apenas barra vertical se necessário */
+  overflow-x: hidden;  /* Sem barra horizontal */
+}
+
+header {
+  background-color: var(--card-bg);
+  padding: 1rem 2rem;
+}
+
+header h1 {
+  color: var(--highlight);
+}
+
+/* --------------------------------------------------------------
+   3) Container de conteúdo principal
+      - Agora ocupa 100% da largura, sem limitar max-width
+-------------------------------------------------------------- */
+#main-content {
+  padding: 1rem 2rem;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* --------------------------------------------------------------
+   4) Títulos de seções (“Vídeos”, “Momento Janeiro de 2024” etc.)
+      - Fonte aumentada e mais espaçamento superior
+-------------------------------------------------------------- */
+.secao-titulo {
+  margin-top: 3rem;     /* Espaçamento maior acima */
+  margin-bottom: 1rem;
+  font-size: 1.75rem;   /* Fonte maior que o padrão */
+  color: var(--text);
+}
+
+/* --------------------------------------------------------------
+   5) Grid responsivo de cards (usando CSS Grid)
+      - Ocupa 100% da largura disponível do dispositivo
+      - Cada coluna terá no mínimo 250px, mas cresce para preencher igualmente
+      - Se não couberem, quebram para a linha de baixo
+-------------------------------------------------------------- */
+.row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+/* Cada card, dentro do grid, ocupa 100% da célula */
+.card {
+  position: relative;
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+/* --------------------------------------------------------------
+   6) Miniaturas (img e video) dentro do card
+      - Altura fixa de 180px e cobre toda a largura
+-------------------------------------------------------------- */
+.card img,
+.card video {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  cursor: pointer;
+  display: block;
+}
+
+/* --------------------------------------------------------------
+   7) Overlay de data (aparece sobre a miniatura da foto)
+-------------------------------------------------------------- */
+.card-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: var(--overlay-bg);
+  padding: 0.5rem;
+}
+
+.card-title {
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+/* --------------------------------------------------------------
+   8) Contador de likes (coração + número) no canto superior direito
+-------------------------------------------------------------- */
+.card-likes {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 0.2rem 0.5rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.card-likes .icon-heart {
+  color: var(--highlight);
+  margin-right: 0.3rem;
+}
+
+/* --------------------------------------------------------------
+   9) MODAL (exibição da imagem ou vídeo ampliado)
+      - Fundo semi-transparente cobrindo toda a tela
+      - Conteúdo centralizado vertical e horizontalmente
+-------------------------------------------------------------- */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal.active {
+  display: flex;
+}
+
+/* --------------------------------------------------------------
+   10) Container interno do modal
+      - Não fixa largura/altura: deixa a imagem definir o tamanho
+      - Overflow hidden para não gerar scrolls internos
+      - Centraliza conteúdo (imagem/vídeo) no meio
+-------------------------------------------------------------- */
+.modal-content {
+  position: relative;
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --------------------------------------------------------------
+   11) Botão de fechar modal no canto superior direito
+-------------------------------------------------------------- */
+.modal-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 1010;
+}
+
+/* --------------------------------------------------------------
+   12) Container que contém a mídia (<img> ou <video>)
+      - Aplica-se diretamente a imagem/vídeo limites da viewport
+      - max-width: 90vw e max-height: 90vh garantem que a mídia
+        nunca ultrapasse 90% da largura ou altura da janela
+      - width: auto e height: auto mantêm a proporção sem distorcer
+-------------------------------------------------------------- */
+#modalMediaContainer img {
+  display: block;
+  max-width: 90vw;   /* No máximo 90% da largura da viewport */
+  max-height: 90vh;  /* No máximo 90% da altura da viewport */
+  width: auto;       /* Largura ajustada automaticamente */
+  height: auto;      /* Altura ajustada automaticamente */
+  object-fit: contain;
+}
+
+#modalMediaContainer video {
+  display: block;
+  max-width: 90vw;
+  max-height: 90vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  background-color: #000;
+}
+
+/* --------------------------------------------------------------
+   13) Informações abaixo da mídia (data + botão de like)
+-------------------------------------------------------------- */
+.modal-info {
+  background-color: var(--card-bg);
+  color: var(--text);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modal-info h3 {
+  margin-bottom: 0.5rem;
+}
+
+.modal-actions button {
+  background-color: var(--highlight);
+  border: none;
+  color: white;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.modal-actions button .icon-heart {
+  margin-right: 0.3rem;
+}
+
+/* --------------------------------------------------------------
+   14) Scrollbar customizada (vertical apenas)
+-------------------------------------------------------------- */
+/* Chrome, Edge e Safari */
+body::-webkit-scrollbar {
+  width: 8px;
+}
+
+body::-webkit-scrollbar-track {
+  background: var(--card-bg);
+}
+
+body::-webkit-scrollbar-thumb {
+  background: var(--highlight);
+  border-radius: 4px;
+}
+
+/* Firefox */
+body {
+  scrollbar-width: thin;
+  scrollbar-color: var(--highlight) var(--card-bg);
+}
